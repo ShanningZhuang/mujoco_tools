@@ -147,9 +147,51 @@ python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
 
 默认输出格式为 `.npy`（多个数组使用 `.npz`）。数据以 `(time, data)` 格式存储。
 
+## 开发
+
+### 设置开发环境
+```bash
+# 克隆仓库
+git clone https://github.com/yourusername/mujoco_tools.git
+cd mujoco_tools
+
+# 创建并激活虚拟环境（可选）
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+.\venv\Scripts\activate  # Windows
+
+# 安装开发依赖
+pip install -e ".[dev]"
+```
+
+### 发布
+当在 GitHub 上创建新的发布版本时，包会自动发布到 PyPI。发布新版本的步骤：
+
+1. 在 `setup.py` 中更新版本号
+2. 创建并推送新标签：
+```bash
+git tag v0.1.0  # 使用适当的版本号
+git push origin v0.1.0
+```
+3. 在 GitHub 上使用该标签创建新的发布版本
+4. GitHub Action 将自动构建并发布到 PyPI
+
+### 运行测试
+```bash
+pytest tests/
+```
+
 ## 贡献
 
 欢迎提交贡献！请随时提交 Pull Request。
+
+贡献步骤：
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m '添加一些很棒的特性'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启一个 Pull Request
 
 ## 许可证
 

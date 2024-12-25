@@ -147,9 +147,51 @@ python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
 
 The default output format is `.npy` (or `.npz` for multiple arrays). Data is stored in `(time, data)` format.
 
+## Development
+
+### Setup Development Environment
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/mujoco_tools.git
+cd mujoco_tools
+
+# Create and activate virtual environment (optional)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or
+.\venv\Scripts\activate  # Windows
+
+# Install development dependencies
+pip install -e ".[dev]"
+```
+
+### Publishing
+The package is automatically published to PyPI when a new release is created on GitHub. To publish a new version:
+
+1. Update version in `setup.py`
+2. Create and push a new tag:
+```bash
+git tag v0.1.0  # Use appropriate version
+git push origin v0.1.0
+```
+3. Create a new release on GitHub using the tag
+4. The GitHub Action will automatically build and publish to PyPI
+
+### Running Tests
+```bash
+pytest tests/
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+To contribute:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
