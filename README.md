@@ -1,107 +1,156 @@
-## mujoco工具箱
+# MuJoCo Tools
 
-### 需求列举
+[English](README.md) | [中文](README_CN.md)
 
-1. 轨迹可视化需求
-- 3D模型运动轨迹渲染
-- 肌肉激活状态热力图显示(TODO)
-- 多视角相机支持(重载render类)
-- 支持1080p/4K分辨率(自定义长宽)
-- 可调节播放速度和帧率
+A comprehensive toolkit for MuJoCo simulation, visualization, and data processing.
 
-2. 数据记录需求
-- 记录关节位置(qpos)和速度(qvel)
-- 记录身体部位位置(xpos)和方向(xquat) 
-- 记录肌腱路径点位置(TODO)
-- 记录传感器数据(TODO)
-- 支持多种数据格式(.npy/.txt/.csv)
+## Todo List
 
-3. 轨迹处理需求
-- 读取多种格式轨迹数据(.npy/.txt/.mot)(TODO)
+### Completed Features
+- [x] Basic MuJoCo model loading and simulation
+- [x] Command-line interface with comprehensive options
+- [x] 3D model motion trajectory rendering
+- [x] Multi-camera view support
+- [x] Customizable resolution (supports up to 4K)
+- [x] Adjustable playback speed and frame rate
+- [x] Joint positions (qpos) and velocities (qvel) recording
+- [x] Body positions (xpos) and orientations (xquat) recording
+- [x] Support for multiple data formats (.npy/.txt/.csv)
+- [x] Basic data analysis and processing utilities
 
-4. 命令行工具
-- 命令行工具参数配置(python parser)
+### In Progress
+- [ ] Add tests scripts to test the package
+- [ ] Muscle activation heatmap display
+- [ ] Tendon path points recording
+- [ ] Sensor data recording
+- [ ] Support for .mot trajectory format
+- [ ] Advanced data analysis tools
+- [ ] Documentation improvements
+- [ ] Unit tests
+- [ ] Example scripts for common use cases
 
-### 格式规定
+## Installation
 
-建议输出默认为npy格式（多个数组用npz），数组中用(time,data)这样的形式。
-
-### 文件层级规定
-
-- mujoco_tools
-  - mujoco_tools
-  - models # test model of mujoco humanoid
-  - examples
-
-### 用法规定
-
-1. 直接通过命令行操作 
-
-```mujoco-tools -m <model.xml> -d <data_file> -mode <kinematics/dynamics> [options]
-Options:
--m, --model        MuJoCo XML model file path
---mode             Simulation mode (kinematics: runs mj.fwd_position, dynamics: runs mj.step)
-Input data:
--d, --data          Input data type and path (e.g. qpos /path/to/qpos.npy ctrl /path/to/ctrl.npy)
-                    If no data provided, default value of 0 will be used
-Visualization options:
--o, --output       Output video path
---resolution       Video resolution (e.g. 1080p, 4K)
---width            Video width in pixels (default: 1920)
---height           Video height in pixels (default: 1080) 
---fps              Video framerate (default: 50)
---timesteps        Timesteps between frames
---camera           Camera names
---flags            Custom vision flags string (e.g. "mjVIS_ACTUATOR mjVIS_ACTIVATION")
-Recording options:
---record          Enable data recording
---format          Output format (npy/txt/csv) (default: npy)
---datatype        Data types to record (e.g. "qpos qvel xpos xquat sensor tendon")
-                qpos: joint positions
-                qvel: joint velocities
-                xpos: body positions 
-                xquat: body orientations
-                sensor: sensor data
-                tendon: tendon path points
+```bash
+# Install from source
+git clone https://github.com/yourusername/mujoco_tools.git
+cd mujoco_tools
+pip install -e .
+# Install from PyPI
+pip install mujoco-tools
+# Install from github
+pip install git+https://github.com/ShanningZhuang/mujoco_tools.git
 ```
-2. 通过bash操作
+
+## Project Structure
+
 ```
-可以通过bash脚本来配置和运行命令，例如:
+mujoco_tools/
+├── mujoco_tools/          # Main package
+│   ├── cli.py            # Command-line interface
+│   ├── mujoco_loader.py  # MuJoCo model loading utilities
+│   ├── player.py         # Visualization player
+│   ├── recorder.py       # Data recording utilities
+│   ├── tools.py          # General utilities
+│   └── data_processor.py # Data processing utilities
+├── models/               # Test models
+└── examples/             # Example scripts
+```
+
+## Usage
+
+### 1. Command Line Interface
+
+```bash
+mujoco-tools -m <model.xml> [options]
+```
+
+#### Required Arguments:
+- `-m, --model`: Path to MuJoCo XML model file
+- `--mode`: Simulation mode (kinematics: runs mj.fwd_position, dynamics: runs mj.step) [default: kinematics]
+
+#### Input Data Options:
+- `-d, --data`: Input data type and path (e.g., "qpos data/qpos.npy ctrl data/ctrl.npy")
+- `--input_data_freq`: Frequency of input data [default: 50]
+
+#### Output Path Options:
+- `--output_path`: Output path [default: logs]
+- `--output_prefix`: Output prefix [default: output]
+
+#### Visualization Options:
+- `--record_video`: Enable video recording
+- `--width`: Video width in pixels [default: 1920]
+- `--height`: Video height in pixels [default: 1080]
+- `--fps`: Video framerate [default: 50]
+- `--output_video_freq`: Frequency of output video [default: 50]
+- `--camera`: Camera name [default: Free]
+- `--flags`: Custom vision flags (e.g., "mjVIS_ACTUATOR mjVIS_ACTIVATION")
+
+#### Recording Options:
+- `--record_data`: Enable data recording
+- `--format`: Output format (npy/txt/csv) [default: npy]
+- `--datatype`: Data types to record (space-separated: qpos qvel xpos xquat sensor tendon) [default: qpos]
+- `--output_data_freq`: Frequency of output data [default: 50]
+
+### 2. Bash Script Usage
+
+Create a bash script for configuration:
+
+```bash
 #!/bin/bash
 
-# 设置默认值
-MODEL_PATH="models/humanoid/humanoid.xml"  # MuJoCo模型文件路径
-DATA_PATH="qpos data/qpos.npy ctrl /path/to/ctrl.npy"                  # 输入数据文件路径
-MODE="kinematics"                          # 仿真模式
-OUTPUT="output/video.mp4"                  # 输出视频路径
-RESOLUTION="1080p"                         # 视频分辨率
-FPS=50                                     # 视频帧率
-CAMERA="side"                              # 相机视角
-RECORD_DATA=1                              # 是否记录数据
-DATA_FORMAT="npy"                          # 输出数据格式
-RECORD_TYPES="qpos qvel xpos"              # 要记录的数据类型
+# Default settings
+MODEL_PATH="models/humanoid/humanoid.xml"
+DATA_PATH="qpos data/qpos.npy"
+MODE="kinematics"
+OUTPUT="output/video.mp4"
+RESOLUTION="1080p"
+FPS=50
+CAMERA="side"
+RECORD_DATA=1
+DATA_FORMAT="npy"
+RECORD_TYPES="qpos qvel xpos"
 
-# 构建命令
-CMD="mujoco-tools \
-    -m \"$MODEL_PATH\" \
-    -d \"$DATA_PATH\" \
-    --mode \"$MODE\" \
-    -o \"$OUTPUT\" \
-    --resolution \"$RESOLUTION\" \
-    --fps \"$FPS\" \
+# Build command
+CMD="mujoco-tools \\
+    -m \"$MODEL_PATH\" \\
+    -d \"$DATA_PATH\" \\
+    --mode \"$MODE\" \\
+    -o \"$OUTPUT\" \\
+    --resolution \"$RESOLUTION\" \\
+    --fps \"$FPS\" \\
     --camera \"$CAMERA\""
 
-# 添加数据记录相关参数
+# Add recording options
 if [ "$RECORD_DATA" -eq 1 ]; then
     CMD+=" --record"
     CMD+=" --format \"$DATA_FORMAT\""
     CMD+=" --datatype \"$RECORD_TYPES\""
 fi
 
-# 执行命令
+# Execute command
 eval "$CMD"
 ```
-3. 通过python脚本
+
+### 3. Python Module Usage
+
+```python
+# Direct module import
+from mujoco_tools import MujocoLoader, Player, Recorder
+
+# Command line usage
+python -m mujoco_tools.cli -m /path/to/model.xml -d 'qpos /path/to/data.npy'
+python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
 ```
-通过load.sh 进入pbd程序，然后就可以用cursor的AI生成代码来生成需要的东西，比如说用来生成ctrl或者qpos的序列，也可以查询其他的东西
-```
+
+## Data Format
+
+The default output format is `.npy` (or `.npz` for multiple arrays). Data is stored in `(time, data)` format.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+[MIT License](LICENSE) 

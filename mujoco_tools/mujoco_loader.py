@@ -1,3 +1,20 @@
+"""
+MuJoCo Model Loader and Viewer
+
+This script provides functionality to load and visualize MuJoCo physics simulation models.
+It supports both active and passive viewing modes:
+- Active viewer: Runs independently in a separate thread
+- Passive viewer: Requires manual synchronization
+
+Usage:
+    python -m mujoco_tools.mujoco_loader --model path/to/model.xml [--active_viewer|--passive_viewer]
+
+Arguments:
+    --model: Path to the MuJoCo XML model file
+    --passive_viewer: Enable passive viewer mode
+    --active_viewer: Enable active viewer mode
+"""
+
 import mujoco
 import mujoco.viewer
 import numpy as np

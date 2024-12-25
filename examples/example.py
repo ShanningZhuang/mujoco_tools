@@ -10,8 +10,8 @@ from typing import Dict, Any
 import mujoco
 import numpy as np
 from tqdm import tqdm
-from mujoco_tools.recorder import MujocoPlayer, VideoRecorder, StateRecorder
-
+from mujoco_tools.recorder import VideoRecorder, StateRecorder
+from mujoco_tools.player import MujocoPlayer
 def parse_data_arg(data_str: str) -> Dict[str, str]:
     """Parse data argument string into a dictionary
     Example: "qpos data/qpos.npy ctrl data/ctrl.npy" -> {"qpos": "data/qpos.npy", "ctrl": "data/ctrl.npy"}
@@ -55,7 +55,7 @@ class TestPlayer(MujocoPlayer):
 
         input_time_step = int(1 / (self.model.opt.timestep * input_data_freq))
         # Initialize data
-        self.data.qpos = self.model.key_qpos
+        self.data.qpos = self.model.key_qpos[0]
         # Main playback loop with progress bar
         with tqdm(total=total_frames, desc="Playing trajectory", unit="frame") as pbar:
             for i in range(0, len(data[first_key])):

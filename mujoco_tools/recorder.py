@@ -40,7 +40,6 @@ class VideoRecorder:
         if self.rgb_renderer is None:
             self.rgb_renderer = mujoco.Renderer(model, width=self.width, height=self.height)
         # Create scene and camera
-        scene = mujoco.MjvScene(model, maxgeom=10000)
         self.rgb_renderer.update_scene(data, camera=self.camera_name, scene_option=self.scene_option)
         frame = self.rgb_renderer.render()
         # Convert from RGB to BGR for OpenCV
@@ -99,11 +98,3 @@ class StateRecorder:
         """Save recorded state data"""
         for datatype in self.datatypes:
             np.save(f'{self.output_path}/{self.output_prefix}_{datatype}.npy', np.array(self.recorded_data[datatype]))
-
-class DataProcessor:
-    def __init__(self, model, data):
-        self.model = model
-        self.data = data
-        
-    def process(self):
-        pass
