@@ -155,11 +155,7 @@ def main():
         player.add_recorder(recorder)
     
     # Load data and play trajectory
-    data_files = parse_data_arg(args.data)
-    player.play_trajectory(
-        data_files,
-        input_data_freq=args.input_data_freq
-    )
+    player.play_trajectory()
     player.save_data()
 
 if __name__ == '__main__':

@@ -70,7 +70,7 @@ mujoco-tools -m <model.xml> [options]
 - `--mode`: Simulation mode (kinematics: runs mj.fwd_position, dynamics: runs mj.step) [default: kinematics]
 
 #### Input Data Options:
-- `-d, --data`: Input data type and path (e.g., "qpos data/qpos.npy ctrl data/ctrl.npy")
+- `-d, --data`: Input data type and path (e.g., "qpos data/qpos.npy ctrl data/ctrl.npy") or Directly input the path of npz
 - `--input_data_freq`: Frequency of input data [default: 50]
 
 #### Output Path Options:
@@ -155,14 +155,8 @@ The default output format is `.npy` (or `.npz` for multiple arrays). Data is sto
 git clone https://github.com/yourusername/mujoco_tools.git
 cd mujoco_tools
 
-# Create and activate virtual environment (optional)
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or
-.\venv\Scripts\activate  # Windows
-
 # Install development dependencies
-pip install -e ".[dev]"
+pip install -e .
 ```
 
 ### Publishing

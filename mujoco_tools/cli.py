@@ -13,19 +13,6 @@ import numpy as np
 from .player import MujocoPlayer
 from .recorder import VideoRecorder, StateRecorder
 
-def parse_data_arg(data_str: str) -> Dict[str, str]:
-    """Parse data argument string into a dictionary
-    Example: "qpos data/qpos.npy ctrl data/ctrl.npy" -> {"qpos": "data/qpos.npy", "ctrl": "data/ctrl.npy"}
-    """
-    if not data_str:
-        return {}
-        
-    parts = data_str.split()
-    if len(parts) % 2 != 0:
-        raise ValueError("Data argument must be pairs of type and path")
-        
-    return dict(zip(parts[::2], parts[1::2]))
-
 def parse_vision_flags(flags_str: str) -> Dict[str, bool]:
     """Parse vision flags string into a dictionary
     Example: "mjVIS_ACTUATOR mjVIS_ACTIVATION" -> {"mjVIS_ACTUATOR": True, "mjVIS_ACTIVATION": True}
@@ -94,7 +81,8 @@ def main():
         mode=args.mode,
         input_data_freq=args.input_data_freq,
         output_path=args.output_path,
-        output_prefix=args.output_prefix
+        output_prefix=args.output_prefix,
+        input_data=args.data
     )
     
     # Setup VideoRecorder if needed
@@ -121,11 +109,7 @@ def main():
         player.add_recorder(recorder)
     
     # Load data and play trajectory
-    data_files = parse_data_arg(args.data)
-    player.play_trajectory(
-        data_files,
-        input_data_freq=args.input_data_freq
-    )
+    player.play_trajectory()
     player.save_data()
 
 if __name__ == '__main__':

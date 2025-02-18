@@ -70,7 +70,7 @@ mujoco-tools -m <model.xml> [选项]
 - `--mode`：仿真模式（kinematics：运行 mj.fwd_position，dynamics：运行 mj.step）[默认：kinematics]
 
 #### 输入数据选项：
-- `-d, --data`：输入数据类型和路径（例如："qpos data/qpos.npy ctrl data/ctrl.npy"）
+- `-d, --data`：输入数据类型和路径（例如："qpos data/qpos.npy ctrl data/ctrl.npy"）或直接输入npz文件
 - `--input_data_freq`：输入数据频率 [默认：50]
 
 #### 输出路径选项：
@@ -155,14 +155,8 @@ python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
 git clone https://github.com/yourusername/mujoco_tools.git
 cd mujoco_tools
 
-# 创建并激活虚拟环境（可选）
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# 或
-.\venv\Scripts\activate  # Windows
-
 # 安装开发依赖
-pip install -e ".[dev]"
+pip install -e .
 ```
 
 ### 发布
