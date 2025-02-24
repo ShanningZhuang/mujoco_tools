@@ -44,6 +44,7 @@ class MujocoPlayer:
             for i in range(0, len(data[first_key])):
                 for key, value in data.items():
                     # Safely set attributes instead of using eval
+                    key = key.split('.')[-1]
                     setattr(self.data, key, value[i])
                 # Forward the simulation
                 if self.mode == 'kinematics':

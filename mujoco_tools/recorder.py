@@ -11,18 +11,22 @@ from tqdm import tqdm
 class VideoRecorder:
     def __init__(self, camera_name='lateral_camera_angle', width=1920, height=1080, fps=50, vision_flags=None, output_video_freq=50):
         """Initialize video recorder with rendering settings"""
-        self.camera_name = camera_name
+        # Convert camera_name string to list if space-separated
+        self.camera_names = camera_name.split() if isinstance(camera_name, str) else camera_name
         self.fps = fps
         self.output_data_freq = output_video_freq
-        self.setup_renderer(width, height)
+        # Width per camera will be total width divided by number of cameras
+        self.camera_width = width
+        self.camera_height = height
+        self.setup_renderer(self.camera_width, self.camera_height)
         # Initialize video writer as None
         self.video_writer = None
         self.output_path = None
         
-    def setup_renderer(self, width, height):
+    def setup_renderer(self, camera_width, camera_height):
         """Set up the MuJoCo renderer with given settings"""
-        self.height = height
-        self.width = width
+        self.video_height = camera_height * len(self.camera_names)
+        self.video_width = camera_width
         self.rgb_renderer = None
         self.scene_option = mujoco.MjvOption()
         # setattr(self.scene_option, 'flags', [mujoco.mjtVisFlag.mjVIS_ACTUATOR, mujoco.mjtVisFlag.mjVIS_ACTIVATION])
@@ -30,21 +34,28 @@ class VideoRecorder:
     def initialize(self, output_path, output_prefix):
         """Initialize video writer"""
         self.output_path = f'{output_path}/{output_prefix}_video.mp4'
-        frame_size = (self.width, self.height)
+        frame_size = (self.video_width, self.video_height)
         fourcc = cv2.VideoWriter_fourcc(*'h264')
         self.video_writer = cv2.VideoWriter(self.output_path, fourcc, self.fps, frame_size)
         print(f"Started recording to {self.output_path}")
         
     def record_frame(self, model, data):
-        """Record a single frame directly to video file"""
+        """Record frames from multiple cameras and concatenate them"""
+        frames = []
         if self.rgb_renderer is None:
-            self.rgb_renderer = mujoco.Renderer(model, width=self.width, height=self.height)
-        # Create scene and camera
-        self.rgb_renderer.update_scene(data, camera=self.camera_name, scene_option=self.scene_option)
-        frame = self.rgb_renderer.render()
+            self.rgb_renderer = mujoco.Renderer(model, width=self.camera_width, height=self.camera_height)
+            
+        for camera_name in self.camera_names:
+            # Create scene and camera
+            self.rgb_renderer.update_scene(data, camera=camera_name, scene_option=self.scene_option)
+            frame = self.rgb_renderer.render()
+            frames.append(frame)
+        
+        # Concatenate frames horizontally
+        combined_frame = np.concatenate(frames, axis=0)
         # Convert from RGB to BGR for OpenCV
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        self.video_writer.write(frame)
+        combined_frame = cv2.cvtColor(combined_frame, cv2.COLOR_RGB2BGR)
+        self.video_writer.write(combined_frame)
         
     def save(self, output_path, output_prefix='video'):
         """Finish recording and release video writer"""

@@ -49,6 +49,6 @@ class InputDataProcessor:
         Returns:
             dict: Dictionary mapping array names to numpy arrays
         """
-        key_list = ["qpos", "qvel", "ctrl"]
+        key_list = ["qpos", "qvel", "ctrl","self.data.qpos","self.data.qvel","self.data.ctrl"]
         with np.load(npz_path) as data:
-            return {key: data[key] for key in key_list if key in data.files}
+            return {key: data[key] for key in key_list if key in data}
