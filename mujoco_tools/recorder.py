@@ -25,8 +25,8 @@ class VideoRecorder:
         
     def setup_renderer(self, camera_width, camera_height):
         """Set up the MuJoCo renderer with given settings"""
-        self.video_height = camera_height * len(self.camera_names)
-        self.video_width = camera_width
+        self.video_height = camera_height 
+        self.video_width = camera_width * len(self.camera_names)
         self.rgb_renderer = None
         self.scene_option = mujoco.MjvOption()
         # setattr(self.scene_option, 'flags', [mujoco.mjtVisFlag.mjVIS_ACTUATOR, mujoco.mjtVisFlag.mjVIS_ACTIVATION])
@@ -52,7 +52,7 @@ class VideoRecorder:
             frames.append(frame)
         
         # Concatenate frames horizontally
-        combined_frame = np.concatenate(frames, axis=0)
+        combined_frame = np.concatenate(frames, axis=1)
         # Convert from RGB to BGR for OpenCV
         combined_frame = cv2.cvtColor(combined_frame, cv2.COLOR_RGB2BGR)
         self.video_writer.write(combined_frame)
