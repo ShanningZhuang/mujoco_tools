@@ -14,8 +14,24 @@ def parse_data_arg(data_str: str) -> Dict[str, str]:
     data_name = parts[::2]
     data_path = parts[1::2]
     data_array = []
-    for i in range(len(data_path)):
-        data_array.append(np.load(data_path[i]))
+    
+    for path in data_path:
+        if path.endswith('.npy'):
+            data_array.append(np.load(path))
+        elif path.endswith('.txt'):
+            # Read the text file and process each line
+            with open(path, 'r') as f:
+                lines = f.readlines()
+            # Process each line: split by comma, convert to float
+            processed_data = [
+                [float(num) for num in line.strip().split(',')]
+                for line in lines
+            ]
+            # Convert to numpy array
+            data_array.append(np.array(processed_data))
+        else:
+            raise ValueError(f"Unsupported file format for {path}. Must be .npy or .txt")
+            
     return dict(zip(data_name, data_array))
 class InputDataProcessor:
     def __init__(self, input_str: str):

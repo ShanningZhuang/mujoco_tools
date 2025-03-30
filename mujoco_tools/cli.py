@@ -62,6 +62,10 @@ def main():
                       help='Camera name')
     parser.add_argument('--flags', type=str,
                       help='Custom vision flags (e.g. "mjVIS_ACTUATOR mjVIS_ACTIVATION")')
+    parser.add_argument('--activation_map', action='store_true',
+                      help='Enable activation map')
+    parser.add_argument('--activation_shape', type=str, default='35 20',
+                      help='Activation map shape (rows cols)')
     
     # Recording options
     parser.add_argument('--record_data', action='store_true',
@@ -93,6 +97,8 @@ def main():
             height=args.height,
             fps=args.fps,
             vision_flags=parse_vision_flags(args.flags),
+            activation_map=args.activation_map,
+            activation_shape=tuple(map(int, args.activation_shape.split())),
             output_video_freq=args.output_video_freq
         )
         player.add_recorder(video_recorder)

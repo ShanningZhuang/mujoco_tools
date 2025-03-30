@@ -141,6 +141,8 @@ from mujoco_tools import MujocoLoader, Player, Recorder
 # Command line usage
 python -m mujoco_tools.cli -m /path/to/model.xml -d 'qpos /path/to/data.npy'
 python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
+mujoco-tools -m /home/zsn/research/mujoco_tools/logs/model/Arm_Hand/mj_vision_manipulation_high_cube.xml -d "act /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_act.txt qpos /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_qpos.txt" --mode kinematics --input_data_freq 500 --record_video --camera "record_camera_2" --width 1920 --height 1080 --output_prefix stage6 --flags "mjVIS_ACTUATOR mjVIS_ACTIVATION"  --activation_map
+ --activation_shape "10 9"
 ```
 
 ## Data Format
