@@ -64,3 +64,56 @@ class MujocoPlayer:
         # Add timestamp to output prefix
         for recorder in self.recorders:
             recorder.save(self.output_path,self.output_prefix)
+
+    def play_one_step(self, step_index=None, data_dict=None):
+        """Play a single step of the trajectory and return model and data
+        
+        Args:
+            step_index: Index of the step to play. If None, uses the next available step.
+            data_dict: Optional dictionary with data to use instead of self.input_data
+        
+        Returns:
+            tuple: (model, data) after playing the step
+        """
+        # Use provided data or fall back to input_data
+        if data_dict is None:
+            if not self.input_data:
+                # Create default data if none provided
+                data_dict = {'ctrl': np.zeros((1, self.model.nu))}
+            else:
+                data_dict = self.input_data
+        
+        # Determine which step to play
+        if step_index is None:
+            # Use an internal counter if no step index provided
+            if not hasattr(self, '_current_step'):
+                self._current_step = 0
+            step_index = self._current_step
+            self._current_step += 1
+        
+        # Check if the step is within bounds
+        first_key = next(iter(data_dict))
+        if step_index >= len(data_dict[first_key]):
+            raise IndexError(f"Step index {step_index} out of bounds (max: {len(data_dict[first_key])-1})")
+        
+        # Set data values from dictionary
+        for key, value in data_dict.items():
+            # Handle both direct attribute names and nested attribute paths
+            attr_parts = key.split('.')
+            if len(attr_parts) > 1:
+                # For attributes like 'self.data.qpos'
+                setattr(self.data, attr_parts[-1], value[step_index])
+            else:
+                # For direct attributes
+                setattr(self.data, key, value[step_index])
+        
+        # Forward the simulation
+        if self.mode == 'kinematics':
+            mujoco.mj_fwdPosition(self.model, self.data)
+        elif self.mode == 'dynamics':
+            input_time_step = int(1 / (self.model.opt.timestep * self.input_data_freq))
+            for _ in range(input_time_step):
+                mujoco.mj_step(self.model, self.data)
+        
+        # Return the model and data
+        return self.model, self.data
