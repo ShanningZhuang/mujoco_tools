@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'mujoco-tools=mujoco_tools.cli:main',
+            'mujoco_tools=mujoco_tools.cli:main',
         ],
     },
     author="Shanning Zhuang",
