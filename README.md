@@ -6,6 +6,11 @@ A comprehensive toolkit for MuJoCo simulation, visualization, and data processin
 
 ## Todo List
 
+### Refactor
+
+- [] Define the unified data format (txt npy npz)
+- [] In recorder, the video that output the result of the activation is obviously not good.
+
 ### Completed Features
 - [x] Basic MuJoCo model loading and simulation
 - [x] Command-line interface with comprehensive options
