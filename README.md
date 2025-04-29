@@ -1,10 +1,30 @@
-# MuJoCo Tools
+<div align="center" style="line-height: 1;">
+<h1 style="text-align: center;">MuJoCo Tools: A Toolbox For MuJoCo</h1>
+  <a href="https://mujoco-tool.readthedocs.io/en/latest/?badge=latest"><img alt="Docs" 
+    src="https://readthedocs.org/projects/mujoco-tool/badge/?version=latest"/></a>
+  <a href="https://www.lnsgroup.cc/"><img alt="Homepage"
+    src="https://img.shields.io/badge/Homepage-LnsGroup-671372"/></a>
+  <a href="https://github.com/ShanningZhuang/mujoco_tools/blob/main/docs/images/wechat_qr_code.jpeg?raw=true"><img alt="Wechat"
+    src="https://img.shields.io/badge/WeChat-Shanning_Zhuang-brightgreen?logo=wechat&logoColor=white"/></a>
+  <a href="https://twitter.com/ShanningZhuang"><img alt="Twitter Follow"
+    src="https://img.shields.io/badge/Twitter-Shanning_Zhuang-white?logo=x&logoColor=white"/></a>
+  <a href="https://github.com/ShanningZhuang/mujoco_tools/blob/main/LICENSE"><img alt="Code License"
+    src="https://img.shields.io/badge/Code_License-MIT-f5de53?&color=f5de53"/></a>
+<br>
+<img src="https://github.com/ShanningZhuang/mujoco_tools/blob/main/docs/images/mujoco_tools_logo_jpg.jpg?raw=true" width="20%" alt="MuJoCo Tools" />
+  <br>
+</div>
 
 [English](README.md) | [中文](README_CN.md)
 
 A comprehensive toolkit for MuJoCo simulation, visualization, and data processing.
 
 ## Todo List
+
+### Refactor
+
+- [] Define the unified data format (txt npy npz)
+- [] In recorder, the video that output the result of the activation is obviously not good.
 
 ### Completed Features
 - [x] Basic MuJoCo model loading and simulation
