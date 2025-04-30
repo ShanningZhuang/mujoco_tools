@@ -1,10 +1,9 @@
-Welcome to Lumache's documentation!
+Welcome to MuJoCo Tools documentation!
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**MuJoCo Tools** is a comprehensive toolkit for MuJoCo simulation, visualization, and data processing.
+It provides easy-to-use interfaces for loading models, recording data, and visualizing simulations
+with a variety of customization options.
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
@@ -17,6 +16,9 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 2
 
    usage
+   advanced
+   modules
    api

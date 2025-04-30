@@ -6,29 +6,66 @@ Usage
 Installation
 ------------
 
-To use Lumache, first install it using pip:
+To use MuJoCo Tools, first install it using pip:
 
 .. code-block:: console
 
-   (.venv) $ pip install lumache
+   # Install from PyPI
+   pip install mujoco-tools
+   
+   # Or install from github
+   pip install git+https://github.com/ShanningZhuang/mujoco_tools.git
+   
+   # Or install from source
+   git clone https://github.com/ShanningZhuang/mujoco_tools.git
+   cd mujoco_tools
+   pip install -e .
 
-Creating recipes
-----------------
+Command Line Usage
+-----------------
 
-To retrieve a list of random ingredients,
-you can use the ``lumache.get_random_ingredients()`` function:
+MuJoCo Tools provides a convenient command-line interface:
 
-.. autofunction:: lumache.get_random_ingredients
+.. code-block:: console
 
-The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
-or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
-will raise an exception.
+   mujoco-tools -m <model.xml> [options]
 
-.. autoexception:: lumache.InvalidKindError
+Required Arguments:
+^^^^^^^^^^^^^^^^^^
 
-For example:
+* ``-m, --model``: Path to MuJoCo XML model file
+* ``--mode``: Simulation mode (kinematics: runs mj.fwd_position, dynamics: runs mj.step) [default: kinematics]
 
->>> import lumache
->>> lumache.get_random_ingredients()
-['shells', 'gorgonzola', 'parsley']
+Input Data Options:
+^^^^^^^^^^^^^^^^^
+
+* ``-d, --data``: Input data type and path (e.g., "qpos data/qpos.npy ctrl data/ctrl.npy") or directly input the path of npz
+* ``--input_data_freq``: Frequency of input data [default: 50]
+
+Visualization Options:
+^^^^^^^^^^^^^^^^^^^^
+
+* ``--record_video``: Enable video recording
+* ``--width``: Video width in pixels [default: 1920]
+* ``--height``: Video height in pixels [default: 1080]
+* ``--fps``: Video framerate [default: 50]
+* ``--camera``: Camera name [default: Free]
+* ``--flags``: Custom vision flags (e.g., "mjVIS_ACTUATOR mjVIS_ACTIVATION")
+
+Python Module Usage
+------------------
+
+You can also use MuJoCo Tools as a Python module:
+
+.. code-block:: python
+
+   # Direct module import
+   from mujoco_tools import MujocoPlayer, VideoRecorder, StateRecorder
+   
+   # Load a model
+   from mujoco_tools.mujoco_loader import MujocoLoader
+   loader = MujocoLoader(model_path='path/to/model.xml')
+   
+   # Create a player for visualization
+   player = MujocoPlayer(loader.model, loader.data)
 
