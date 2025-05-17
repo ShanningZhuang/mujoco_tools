@@ -1,0 +1,5 @@
+# Test-related files
+test_data/*
+.pytest_cache/
+__pycache__/
+*.pyc 
