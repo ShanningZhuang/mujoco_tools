@@ -75,7 +75,6 @@ class TestInputDataProcessor:
         np.testing.assert_array_equal(result["qpos"], sample_data["qpos"])
         np.testing.assert_array_equal(result["ctrl"], sample_data["ctrl"])
     
-    @pytest.mark.xfail(reason="Bug in InputDataProcessor.__init__ with empty strings")
     def test_empty_input(self):
         """Test with empty input"""
         # This test is expected to fail due to a bug in the implementation

@@ -41,6 +41,7 @@ class InputDataProcessor:
             input_str: Either a path to .npz file or string in format "type1 path1 type2 path2"
         """
         if not input_str:
+            self.input_str = ""
             return None
         if not isinstance(input_str, str):
             raise ValueError("Input must be a string")
