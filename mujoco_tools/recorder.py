@@ -52,7 +52,7 @@ class VideoRecorder:
         """Initialize video writer"""
         self.output_path = f'{output_path}/{output_prefix}_video.mp4'
         frame_size = (self.video_width, self.video_height)
-        fourcc = cv2.VideoWriter_fourcc(*'h264')
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         self.video_writer = cv2.VideoWriter(self.output_path, fourcc, self.fps, frame_size)
         print(f"Started recording to {self.output_path}")
         
