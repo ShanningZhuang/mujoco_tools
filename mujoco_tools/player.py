@@ -4,7 +4,7 @@ import os
 from tqdm import tqdm
 from .data_processor import InputDataProcessor
 class MujocoPlayer:
-    def __init__(self, model_path, mode='kinematics', input_data_freq=500, output_path=None, output_prefix=None, input_data=None):
+    def __init__(self, model_path, mode='kinematics', input_data_freq=500, output_path=None, output_prefix=None, input_data=None, init_qpos=None):
         """Initialize MuJoCo player with model and optional recorders"""
         if mode not in ['kinematics', 'dynamics']:
             raise ValueError("Mode must be either 'kinematics' or 'dynamics'")
@@ -19,6 +19,7 @@ class MujocoPlayer:
         self.recorders = []
         data_processor = InputDataProcessor(input_data)
         self.input_data = data_processor.process()
+        self.init_qpos = init_qpos
         
     def add_recorder(self, recorder):
         """Add a recorder to the player"""
@@ -39,6 +40,13 @@ class MujocoPlayer:
         total_frames = len(range(0, len(data[first_key])))
 
         input_time_step = int(1 / (self.model.opt.timestep * self.input_data_freq))
+        
+        # Initialize with specified key_qpos if provided
+        if self.init_qpos is not None:
+            if self.init_qpos < 0 or self.init_qpos >= self.model.nkey:
+                raise ValueError(f"init_qpos {self.init_qpos} is out of range. Model has {self.model.nkey} keyframes (0-{self.model.nkey-1})")
+            self.data.qpos = self.model.key_qpos[self.init_qpos]
+        
         # Main playback loop with progress bar
         with tqdm(total=total_frames, desc="Playing trajectory", unit="frame") as pbar:
             for i in range(0, len(data[first_key])):

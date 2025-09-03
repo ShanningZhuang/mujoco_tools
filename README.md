@@ -37,6 +37,7 @@ A comprehensive toolkit for MuJoCo simulation, visualization, and data processin
 - [x] Body positions (xpos) and orientations (xquat) recording
 - [x] Support for multiple data formats (.npy/.txt/.csv)
 - [x] Basic data analysis and processing utilities
+- [x] Initial pose configuration using model keyframes (init_qpos)
 
 ### In Progress
 - [ ] Add tests scripts to test the package
@@ -92,6 +93,7 @@ mujoco-tools -m <model.xml> [options]
 #### Input Data Options:
 - `-d, --data`: Input data type and path (e.g., "qpos data/qpos.npy ctrl data/ctrl.npy") or Directly input the path of npz
 - `--input_data_freq`: Frequency of input data [default: 50]
+- `--init_qpos`: Initialize first frame with key_qpos[init_qpos] from the model (integer index)
 
 #### Output Path Options:
 - `--output_path`: Output path [default: logs]
@@ -158,11 +160,15 @@ eval "$CMD"
 # Direct module import
 from mujoco_tools import MujocoLoader, Player, Recorder
 
-# Command line usage
+# Command line usage examples
+# Basic usage
 python -m mujoco_tools.cli -m /path/to/model.xml -d 'qpos /path/to/data.npy'
-python -m mujoco_tools.mujoco_loader -m /path/to/model.xml
-mujoco-tools -m /home/zsn/research/mujoco_tools/logs/model/Arm_Hand/mj_vision_manipulation_high_cube.xml -d "act /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_act.txt qpos /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_qpos.txt" --mode kinematics --input_data_freq 500 --record_video --camera "record_camera_2" --width 1920 --height 1080 --output_prefix stage6 --flags "mjVIS_ACTUATOR mjVIS_ACTIVATION"  --activation_map
- --activation_shape "10 9"
+
+# Using initial keyframe position
+python -m mujoco_tools.cli -m /path/to/model.xml --init_qpos 0 --record_video
+
+# Advanced usage with activation visualization
+mujoco-tools -m /home/zsn/research/mujoco_tools/logs/model/Arm_Hand/mj_vision_manipulation_high_cube.xml -d "act /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_act.txt qpos /home/zsn/research/mujoco_tools/logs/arm_hand/2025_02_08_23_07_44_HandCube_qpos.txt" --mode kinematics --input_data_freq 500 --record_video --camera "record_camera_2" --width 1920 --height 1080 --output_prefix stage6 --flags "mjVIS_ACTUATOR mjVIS_ACTIVATION" --activation_map --activation_shape "10 9" --init_qpos 0
 ```
 
 ## Data Format

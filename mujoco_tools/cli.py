@@ -46,6 +46,8 @@ def main():
     # Input data
     parser.add_argument('-d', '--data', type=str,
                       help='Input data type and path (e.g. "qpos data/qpos.npy ctrl data/ctrl.npy")')
+    parser.add_argument('--init_qpos', type=int,
+                      help='Initialize first frame with key_qpos[init_qpos] from the model')
         
     # Visualization options
     parser.add_argument('--record_video', action='store_true',
@@ -86,7 +88,8 @@ def main():
         input_data_freq=args.input_data_freq,
         output_path=args.output_path,
         output_prefix=args.output_prefix,
-        input_data=args.data
+        input_data=args.data,
+        init_qpos=args.init_qpos
     )
     
     # Setup VideoRecorder if needed
