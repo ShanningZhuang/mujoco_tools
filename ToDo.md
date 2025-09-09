@@ -1,3 +1,4 @@
+- [ ] uv support
+- [ ] Video encoder support
 - [ ] Inverse kinematics
 - [ ] blender export/import
-- [ ] Video encoder support
