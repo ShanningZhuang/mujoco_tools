@@ -1,4 +1,4 @@
-- [ ] uv support
-- [ ] Video encoder support
-- [ ] Inverse kinematics
-- [ ] blender export/import
+- [ ] uv support (Yaming&Shanning)
+- [ ] Video encoder support (Yaming)
+- [ ] Inverse kinematics (Yaming&Haixin)
+- [ ] blender export/import (Shanning&Meike)
