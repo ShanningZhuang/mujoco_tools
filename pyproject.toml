@@ -28,9 +28,9 @@ dependencies = [
     "mujoco>=3.2.0",
     "numpy>=1.23.0",
     "matplotlib>=3.4.0",
-    "opencv-python>=4.5.0",
     "imageio>=2.9.0",
     "tqdm>=4.62.0",
+    "mediapy>=1.2.4",
 ]
 
 [project.urls]
